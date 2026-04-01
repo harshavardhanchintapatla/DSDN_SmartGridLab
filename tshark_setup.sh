@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tshark Installation for Traffic Capture
+# Tshark + Scapy Installation for Traffic Capture
 # Part of Chapter 4: DNP3 Setup
 
 set -euo pipefail
@@ -15,7 +15,7 @@ warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 err()  { echo -e "${RED}[ERR]${NC} $1"; }
 
 echo "=========================================="
-echo "Tshark Installation for Traffic Capture"
+echo "Tshark + Scapy Installation for Traffic Capture"
 echo "=========================================="
 echo ""
 
@@ -52,9 +52,43 @@ CURRENT_USER="${USER}"
 ok "Adding user '${CURRENT_USER}' to wireshark group..."
 sudo usermod -a -G wireshark "${CURRENT_USER}"
 
-# Verify installation
+# ==========================================
+# Install Scapy
+# ==========================================
 echo ""
-ok "Verifying installation..."
+echo "=========================================="
+echo "Installing Scapy"
+echo "=========================================="
+
+ok "Installing python3-scapy via apt..."
+sudo apt install -y python3-scapy
+
+# Verify Scapy installation
+ok "Verifying Scapy installation..."
+if python3 -c "import scapy; print('Scapy OK')" 2>/dev/null; then
+  ok "Scapy imported successfully"
+  python3 -c "import scapy; print('  Version: ' + scapy.__version__)" 2>/dev/null || true
+else
+  warn "Scapy apt package may be incomplete. Attempting pip3 fallback..."
+  if command -v pip3 >/dev/null 2>&1; then
+    pip3 install scapy --break-system-packages 2>/dev/null || sudo pip3 install scapy
+    if python3 -c "import scapy; print('Scapy OK')" 2>/dev/null; then
+      ok "Scapy installed via pip3 successfully"
+    else
+      err "Scapy installation failed via both apt and pip3."
+      exit 1
+    fi
+  else
+    err "pip3 not found. Cannot fall back to pip install."
+    exit 1
+  fi
+fi
+
+# ==========================================
+# Verify tshark installation
+# ==========================================
+echo ""
+ok "Verifying tshark installation..."
 if ! command -v tshark >/dev/null 2>&1; then
   err "tshark command not found. Installation failed."
   exit 1
@@ -77,7 +111,7 @@ fi
 
 echo ""
 echo "=========================================="
-ok "Tshark Installation Complete!"
+ok "Tshark + Scapy Installation Complete!"
 echo "=========================================="
 echo ""
 echo "=========================================="
