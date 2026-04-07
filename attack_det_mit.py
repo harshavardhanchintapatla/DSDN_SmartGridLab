@@ -1553,6 +1553,11 @@ Return a JSON object with EXACTLY these keys:
                         serializer_overrides=serializer_overrides,
                         **accuracy,
                     )
+                    print("\n" + "=" * 90)
+                    print(f" EXPLAINABILITY FOR ALERT #{alert_id}")
+                    print("=" * 90)
+                    print(enriched)
+                    print("=" * 90 + "\n")
                     result["execution_summary"]["explainability_status"] = "SUCCESS"
                     result["execution_summary"]["pass2_time_s"] = p2e
                     logger.info(f"[Pass 2] Enriched #{alert_id} in {p2e}s")
