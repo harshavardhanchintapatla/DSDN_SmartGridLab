@@ -15,7 +15,7 @@ warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 err()  { echo -e "${RED}[ERR]${NC} $1"; }
 
 echo "=========================================="
-echo "Tshark + Scapy Installation for Traffic Capture"
+echo "Tshark Installation for Traffic Capture"
 echo "=========================================="
 echo ""
 
@@ -111,7 +111,7 @@ fi
 
 echo ""
 echo "=========================================="
-ok "Tshark + Scapy Installation Complete!"
+ok "Tshark Installation Complete!"
 echo "=========================================="
 echo ""
 echo "=========================================="
@@ -139,6 +139,4 @@ echo "  - Source/Destination ports"
 echo "  - DNP3 function code, sequence number, flags"
 echo ""
 echo "Press Ctrl+C to stop capturing"
-echo ""
-echo "Next: Continue with DNP3 installation"
 echo "=========================================="
